@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
     <title>Suhana - My Gwen Stacy</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Poppins:wght@300;400;600&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
     
@@ -135,7 +136,7 @@
         <button class="start-btn" onclick="openSite()">Tap to Open ❤️</button>
     </div>
 
-    <audio id="bgMusic" loop>
+    <audio id="bgMusic" preload="auto" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
@@ -196,17 +197,22 @@
     <script>
         const WHATSAPP_NUMBER = "919307771742";
 
+        // UPDATED FOR SAMSUNG/IPHONE COMPATIBILITY
         function openSite() {
+            const music = document.getElementById('bgMusic');
+            
+            // Wake up the audio engine
+            music.load(); 
+            
             document.getElementById('start-overlay').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
+            
             setTimeout(() => {
                 document.getElementById('mainApp').style.opacity = '1';
                 startHearts();
-            }, 50);
-
-            const music = document.getElementById('bgMusic');
-            music.volume = 1.0;
-            music.play().catch(e => console.log("Audio blocked or loading"));
+                // Play audio after the screen is visible
+                music.play().catch(e => console.log("Audio waiting for interaction"));
+            }, 100);
         }
 
         function revealNote(element) {
@@ -273,4 +279,3 @@
     </script>
 </body>
 </html>
-
