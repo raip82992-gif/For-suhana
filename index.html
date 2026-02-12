@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Suhana - My Gwen Stacy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Poppins:wght@300;400;600&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- RESET --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        :root {
+            --spidey-red: #e23636;
+            --spidey-blue: #014174;
+            --gwen-pink: #fd3293;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(-45deg, #b92b27, #1565C0, #fd3293, #b92b27);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            color: white;
+            padding-bottom: 50px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- 1. START OVERLAY --- */
+        #start-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.98); z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 20px; transition: opacity 0.5s;
+        }
+        .start-btn {
+            background: var(--spidey-red); color: white; padding: 20px 60px; margin-top: 20px;
+            border: 3px solid white; border-radius: 50px; font-size: 1.5rem; font-weight: bold;
+            cursor: pointer; box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+        /* --- 2. MAIN CONTAINER --- */
+        .container { 
+            max-width: 800px; margin: 0 auto; padding: 20px; 
+            opacity: 0; transition: opacity 1s ease;
+            position: relative; z-index: 10; display: none;
+        }
+        
+        .header { text-align: center; margin: 30px 0; }
+        .header h1 { font-family: 'Great Vibes', cursive; font-size: 3.5rem; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .header p { font-size: 1rem; opacity: 0.9; margin-top: 5px; }
+
+        /* --- 3. SECRET NOTE --- */
+        .secret-note-container {
+            margin: 30px 0; perspective: 1000px; cursor: pointer;
+        }
+        .envelope {
+            background: rgba(255,255,255,0.95); color: #333; padding: 25px; border-radius: 15px;
+            position: relative; border: 3px solid var(--spidey-red);
+            text-align: center; transition: transform 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .envelope:active { transform: scale(0.95); }
+        .envelope h3 { font-family: 'Space Grotesk'; text-transform: uppercase; color: var(--spidey-red); letter-spacing: 1px; }
+        .note-content {
+            display: none; text-align: left; margin-top: 15px; 
+            font-family: 'Dancing Script'; font-size: 1.3rem; line-height: 1.6; color: #000;
+        }
+
+        /* --- 4. MEMORIES GRID --- */
+        .memories-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 30px 0;
+        }
+        .memory-card {
+            height: 160px; border-radius: 20px; background-size: cover; background-position: center;
+            border: 3px solid white; position: relative; overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .memory-label {
+            position: absolute; bottom: 0; width: 100%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            font-family: 'Dancing Script'; font-size: 1.2rem; text-align: center; padding: 10px;
+        }
+
+        /* --- 5. BUTTONS --- */
+        .cta-section { text-align: center; margin-top: 50px; padding-bottom: 120px; }
+        .question { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; margin-bottom: 30px; font-weight: bold; }
+        
+        .btn-container { 
+            position: relative; display: flex; justify-content: center; align-items: center; 
+            gap: 30px; height: 80px; width: 100%;
+        }
+        
+        .btn {
+            padding: 15px 40px; font-size: 1.2rem; font-weight: 700; border: none;
+            border-radius: 50px; cursor: pointer; text-transform: uppercase; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 100; white-space: nowrap;
+        }
+        .btn-yes { background: white; color: var(--spidey-red); border: 2px solid var(--spidey-red); }
+        .btn-no { background: #333; color: white; transition: none; }
+
+        /* --- 6. POPUPS --- */
+        .message-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            z-index: 200; justify-content: center; align-items: center;
+        }
+        .msg-box { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; color: black; }
+        textarea { width: 100%; height: 80px; margin: 15px 0; border-radius: 10px; padding: 10px; border: 2px solid #ddd; }
+
+        .celebration-screen {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: linear-gradient(135deg, var(--spidey-red), #900000); 
+            z-index: 99999; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;
+        }
+
+        #hearts { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .heart { position: absolute; bottom: -10%; animation: floatUp 6s linear forwards; opacity: 0.7; }
+        @keyframes floatUp { to { transform: translateY(-120vh) rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div id="start-overlay">
+        <h1 style="font-family: 'Great Vibes'; font-size: 3.5rem;">For Suhana</h1>
+        <p>Turn up the volume 🔊</p>
+        <button class="start-btn" onclick="openSite()">Tap to Open ❤️</button>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="https://drive.google.com/uc?export=download&id=1VePZ4qIXDLNOVZJjaJ2YZUc5qy_rIYKW" type="audio/mpeg">
+    </audio>
+
+    <div id="hearts"></div>
+
+    <div class="container" id="mainApp">
+        <header class="header">
+            <h1>My Suhana</h1>
+            <p>You're my Gwen Stacy in every universe.</p>
+        </header>
+
+        <div class="secret-note-container" onclick="revealNote(this)">
+            <div class="envelope">
+                <h3>🕷️ Top Secret Mission</h3>
+                <p style="font-size: 0.8rem; color: #666;">(Tap to Reveal)</p>
+                <div class="note-content">
+                    My Dearest Suhana,<br><br>
+                    Just like Spiderman needs his web-shooters, I need you. You are my adventure, my peace, and my favorite person. <br><br>
+                    I promise to always be your shoulder when it's stormy weather. I'm gonna love you until my lungs give out.
+                </div>
+            </div>
+        </div>
+
+        <div class="memories-grid">
+            <div class="memory-card" style="background-image: url('1.jpg');"><div class="memory-label">Us</div></div>
+            <div class="memory-card" style="background-image: url('2.jpg');"><div class="memory-label">First Swing</div></div>
+            <div class="memory-card" style="background-image: url('3.jpg');"><div class="memory-label">Pizza Time</div></div>
+            <div class="memory-card" style="background-image: url('4.jpg');"><div class="memory-label">My Flower</div></div>
+            <div class="memory-card" style="background-image: url('5.jpg');"><div class="memory-label">Best Date</div></div>
+            <div class="memory-card" style="background-image: url('6.jpg');"><div class="memory-label">Best Person</div></div>
+        </div>
+
+        <div class="cta-section">
+            <h2 class="question" id="qText">Will You Be My Valentine?</h2>
+            
+            <div class="btn-container">
+                <button class="btn btn-yes" onclick="showMsgBox()">YES! ❤️</button>
+                <button class="btn btn-no" id="noBtn" onmouseover="dodge()" onclick="dodge()" ontouchstart="dodge()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="message-overlay" id="msgOverlay">
+        <div class="msg-box">
+            <h3 style="font-family: 'Great Vibes'; font-size: 2.5rem; color: #e23636;">I Knew It!</h3>
+            <p>Tell me something sweet:</p>
+            <textarea id="customMsg" placeholder="Type here..."></textarea>
+            <button class="btn btn-yes" style="margin-top: 10px;" onclick="finishProposal()">Send & Celebrate</button>
+        </div>
+    </div>
+
+    <div class="celebration-screen" id="celebration">
+        <h1 style="font-family: 'Great Vibes'; font-size: 5rem;">FOREVER!</h1>
+        <p style="font-size: 1.5rem; margin-bottom: 30px;">I love you more than anything.</p>
+        <button class="btn btn-yes" onclick="sendWhatsapp()">Send Message 💌</button>
+    </div>
+
+    <script>
+        const WHATSAPP_NUMBER = "919307771742";
+
+        function openSite() {
+            document.getElementById('start-overlay').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('mainApp').style.opacity = '1';
+                startHearts();
+            }, 50);
+
+            const music = document.getElementById('bgMusic');
+            music.volume = 1.0;
+            music.play().catch(e => console.log("Audio blocked or loading"));
+        }
+
+        function revealNote(element) {
+            const content = element.querySelector('.note-content');
+            const title = element.querySelector('h3');
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+                title.innerText = "🕷️ TOP SECRET MISSION";
+            } else {
+                content.style.display = 'block';
+                title.innerText = "❤️ FOR SUHANA";
+            }
+        }
+
+        let count = 0;
+        function dodge() {
+            const btn = document.getElementById('noBtn');
+            const qText = document.getElementById('qText');
+            count++;
+            
+            const maxX = window.innerWidth - btn.offsetWidth - 20;
+            const maxY = window.innerHeight - btn.offsetHeight - 20;
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+
+            btn.style.position = 'fixed';
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+
+            if(count >= 5) {
+                btn.innerText = "I'm a Villain 😈";
+                btn.style.background = "black";
+                qText.innerText = "Gwen... why are you being a villain?";
+                qText.style.color = "#FFD700";
+            }
+        }
+
+        function showMsgBox() {
+            document.getElementById('msgOverlay').style.display = 'flex';
+        }
+
+        function finishProposal() {
+            document.getElementById('msgOverlay').style.display = 'none';
+            document.getElementById('celebration').style.display = 'flex';
+        }
+
+        function sendWhatsapp() {
+            const custom = document.getElementById('customMsg').value;
+            const msg = encodeURIComponent("YES! I'll be your Valentine! ❤️ Message: " + custom);
+            window.location.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+        }
+
+        function startHearts() {
+            setInterval(() => {
+                const h = document.createElement('div');
+                h.className = 'heart';
+                h.innerText = '❤️';
+                h.style.left = Math.random() * 100 + '%';
+                h.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                document.getElementById('hearts').appendChild(h);
+                setTimeout(() => h.remove(), 5000);
+            }, 400);
+        }
+    </script>
+</body>
+</html>
