@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <title>Suhana - My Gwen Stacy</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="A Special Mission for Suhana 🕸️">
+    <meta property="og:description" content="Click to open your Valentine's surprise.">
+    <meta property="og:image" content="https://raip82992-gif.github.io/For-suhana/preview.jpg">
+    <meta property="og:url" content="https://raip82992-gif.github.io/For-suhana/">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Poppins:wght@300;400;600&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
     
     <style>
@@ -197,11 +203,8 @@
     <script>
         const WHATSAPP_NUMBER = "919307771742";
 
-        // UPDATED FOR SAMSUNG/IPHONE COMPATIBILITY
         function openSite() {
             const music = document.getElementById('bgMusic');
-            
-            // Wake up the audio engine
             music.load(); 
             
             document.getElementById('start-overlay').style.display = 'none';
@@ -210,7 +213,6 @@
             setTimeout(() => {
                 document.getElementById('mainApp').style.opacity = '1';
                 startHearts();
-                // Play audio after the screen is visible
                 music.play().catch(e => console.log("Audio waiting for interaction"));
             }, 100);
         }
@@ -279,3 +281,4 @@
     </script>
 </body>
 </html>
+
